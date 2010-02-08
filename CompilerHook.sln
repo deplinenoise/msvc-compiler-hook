@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompilerHookLib", "CompilerHookLib\CompilerHookLib.csproj", "{AB6CC075-CAEA-4DA4-948B-8203DEFCE0E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HookController", "HookController\HookController.csproj", "{97B23285-8B40-46A9-A215-2CDF5B95D4F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB6CC075-CAEA-4DA4-948B-8203DEFCE0E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB6CC075-CAEA-4DA4-948B-8203DEFCE0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB6CC075-CAEA-4DA4-948B-8203DEFCE0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB6CC075-CAEA-4DA4-948B-8203DEFCE0E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97B23285-8B40-46A9-A215-2CDF5B95D4F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97B23285-8B40-46A9-A215-2CDF5B95D4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97B23285-8B40-46A9-A215-2CDF5B95D4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97B23285-8B40-46A9-A215-2CDF5B95D4F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
