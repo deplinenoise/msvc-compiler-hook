@@ -143,6 +143,9 @@ namespace CompilerHookLib
 			catch (Exception)
 			{
 			}
+
+            m_createProcessHook.Dispose();
+            m_createProcessHookAnsi.Dispose();
 		}
 
 		bool CreateProcess_Hooked_Wide(string lpApplicationName,
@@ -152,7 +155,7 @@ namespace CompilerHookLib
 		   [In] ref STARTUPINFOW lpStartupInfo,
 		   out PROCESS_INFORMATION lpProcessInformation)
 		{
-			m_controller.TranslateCommandLine(lpCommandLine);
+			m_controller.AdjustCommandLine(ref lpApplicationName, ref lpCommandLine);
 			return CreateProcessW(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, ref lpStartupInfo, out lpProcessInformation);
 		}
 
@@ -163,7 +166,7 @@ namespace CompilerHookLib
 		   [In] ref STARTUPINFOA lpStartupInfo,
 		   out PROCESS_INFORMATION lpProcessInformation)
 		{
-			m_controller.TranslateCommandLine(lpCommandLine);
+            m_controller.AdjustCommandLine(ref lpApplicationName, ref lpCommandLine);
 			return CreateProcessA(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, ref lpStartupInfo, out lpProcessInformation);
 		}
 	}

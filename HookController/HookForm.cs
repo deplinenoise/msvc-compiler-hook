@@ -25,14 +25,25 @@ namespace HookController
 			public bool hooked;
 		}
 
-		HookedProcessInfo m_selectedProcess = null;
-
 		HookController m_controller = new HookController();
 
 		int[] m_pidList = new int[4096];
 
 		List<HookedProcessInfo> m_processes = new List<HookedProcessInfo>();
 		Dictionary<int, HookedProcessInfo> m_pids = new Dictionary<int, HookedProcessInfo>();
+
+        bool first = true;
+
+        protected override void OnShown(EventArgs e)
+        {
+            if (!first)
+                base.OnShown(e);
+            else
+            {
+                first = false;
+                Hide();
+            }
+        }
 
 		public HookForm()
 		{
@@ -127,8 +138,9 @@ namespace HookController
 								HookedProcessInfo info = new HookedProcessInfo();
 								info.pid = pid;
 								info.name = nameString;
-								info.hooked = false;
+								info.hooked = true;
 								m_pids[pid] = info;
+                                Hook(pid);
 								changed = true;
 							}
 						}
@@ -177,32 +189,24 @@ namespace HookController
 			ProcessList.Refresh();
 		}
 
-		private void ProcessList_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (ProcessList.SelectedIndices.Count == 0)
-				m_selectedProcess = null;
-			else
-				m_selectedProcess = m_processes[ProcessList.SelectedIndices[0]];
-
-			btnInstallHook.Enabled = m_selectedProcess != null;
-		}
-
-		private void btnInstallHook_Click(object sender, EventArgs e)
-		{
+        private bool Hook(int pid)
+        {
 			try
 			{
-				OnLog(string.Format("hooking {0} ({1})..", m_selectedProcess.pid, m_selectedProcess.name));
+				OnLog(string.Format("hooking pid {0}..", pid));
 				Config.Register("CompilerHook", "HookController.exe", "CompilerHookLib.dll");
 				string channelName = null;
 				RemoteHooking.IpcCreateServer<HookController>(ref channelName, System.Runtime.Remoting.WellKnownObjectMode.SingleCall);
-				RemoteHooking.Inject(m_selectedProcess.pid, "CompilerHookLib.dll", "CompilerHookLib.dll", channelName);
+				RemoteHooking.Inject(pid, "CompilerHookLib.dll", "CompilerHookLib.dll", channelName);
 				OnLog(string.Format("injecting using channel {0}..", channelName));
+                return true;
 			}
 			catch (Exception ex)
 			{
 				OnLog(string.Format("error! {0}", ex.Message));
+                return false;
 			}
-		}
+        }
 
 		private delegate void DLog(string text);
 		private delegate void DHookInstalled(int pid);
@@ -231,7 +235,7 @@ namespace HookController
 
 		internal void ExternalLog(string format, params object[] args)
 		{
-			Invoke(new DLog(OnLog), string.Format(format, args));
+			// Invoke(new DLog(OnLog), string.Format(format, args));
 		}
 
 		private void HookForm_Resize(object sender, EventArgs e)
