@@ -138,10 +138,10 @@ namespace HookController
 
         public void AdjustCommandLine(ref string lpApplicationName, ref string lpCommandLine)
         {
-            HookForm.Instance.ExternalLog("IN: App: {0}, CmdLine: {1}", lpApplicationName, lpCommandLine);
+            // HookForm.Instance.ExternalLog("IN: App: {0}, CmdLine: {1}", lpApplicationName, lpCommandLine);
 
             // Only hook VCBuildHelper calls
-            if (!lpApplicationName.EndsWith("\\VcBuildHelper.exe", StringComparison.InvariantCultureIgnoreCase))
+            if (lpApplicationName == null || !lpApplicationName.EndsWith("\\VcBuildHelper.exe", StringComparison.InvariantCultureIgnoreCase))
                 return;
 
             CommandLine l = new CommandLine();
@@ -154,6 +154,8 @@ namespace HookController
             {
                 string firstToken = l.tokens[0];
                 string newageDir = Environment.GetEnvironmentVariable("NEWAGE");
+                if (null == newageDir)
+                    throw new ApplicationException("NEWAGE environment variable not set");
 
                 if (firstToken.Equals("cl.exe", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -170,7 +172,7 @@ namespace HookController
                 }
                 else
                 {
-                    lpApplicationName = "cmd /c echo unsupported";
+                    throw new ApplicationException("Unknown operation mode");
                 }
 
                 lpCommandLine = l.GetNewAgeCommandLine();

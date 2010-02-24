@@ -155,7 +155,17 @@ namespace CompilerHookLib
 		   [In] ref STARTUPINFOW lpStartupInfo,
 		   out PROCESS_INFORMATION lpProcessInformation)
 		{
-			m_controller.AdjustCommandLine(ref lpApplicationName, ref lpCommandLine);
+            try
+            {
+                m_controller.AdjustCommandLine(ref lpApplicationName, ref lpCommandLine);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hook Error");
+                lpProcessInformation = new PROCESS_INFORMATION();
+                return false;
+            }
+
 			return CreateProcessW(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, ref lpStartupInfo, out lpProcessInformation);
 		}
 
@@ -166,7 +176,15 @@ namespace CompilerHookLib
 		   [In] ref STARTUPINFOA lpStartupInfo,
 		   out PROCESS_INFORMATION lpProcessInformation)
 		{
-            m_controller.AdjustCommandLine(ref lpApplicationName, ref lpCommandLine);
+            try
+            {
+                m_controller.AdjustCommandLine(ref lpApplicationName, ref lpCommandLine);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hook Error");
+                lpProcessInformation = new PROCESS_INFORMATION();
+            }
 			return CreateProcessA(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, ref lpStartupInfo, out lpProcessInformation);
 		}
 	}
