@@ -1,0 +1,17 @@
+This is a hack to install a hook inside Visual Studio 2008 and intercept
+CreateProcess calls and rewrite them. This allows you to rewrite the command
+lines of compile and link steps, so you can mix Win32 and Amiga compilation in
+the same project.
+
+The way to do this is to look for some special command line parameter, like
+/AMIGA and then totally rewrite the command line.
+
+The second part to this is a controller that sits in your tray that enables the
+hooking. The controller has the rewrite tables and does the actual command line
+patching. This was much more convenient than having everything in one package.
+
+This program should work, but is rough and untested and is made available as a
+proof of concept.
+
+To build it, download EasyHook and put all the DLLs and stuff it in the bin/
+directory.
